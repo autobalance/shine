@@ -56,6 +56,12 @@
 #define MAX_GRANULES 2
 #endif
 
+#ifdef USE_CONST_LUTS
+#define USE_CONST_MDCT_LUT
+#define USE_CONST_SUBBAND_LUT
+#define USE_CONST_L3LOOP_LUT
+#endif
+
 typedef struct {
     int channels;
     int samplerate;
@@ -92,18 +98,35 @@ typedef struct {
   int32_t en[MAX_GRANULES][21];
   int32_t xm[MAX_GRANULES][21];
   int32_t xrmaxl[MAX_GRANULES];
+
+  #ifndef USE_CONST_L3LOOP_LUT
   double steptab[128]; /* 2**(-x/4)  for x = -127..0 */
   int32_t steptabi[128];  /* 2**(-x/4)  for x = -127..0 */
   int int2idx[10000]; /* x**(3/4)   for x = 0..9999 */
+  #else
+  const double *steptab; /* 2**(-x/4)  for x = -127..0 */
+  const int32_t *steptabi;  /* 2**(-x/4)  for x = -127..0 */
+  const int *int2idx; /* x**(3/4)   for x = 0..9999 */
+  #endif
 } l3loop_t;
 
 typedef struct {
+  #ifndef USE_CONST_MDCT_LUT
   int32_t cos_l[18][36];
+  #else
+  const int32_t (*cos_l)[36];
+  #endif
 } mdct_t;
 
 typedef struct {
   int off[MAX_CHANNELS];
+
+  #ifndef USE_CONST_SUBBAND_LUT
   int32_t fl[SBLIMIT][64];
+  #else
+  const int32_t (*fl)[64];
+  #endif
+
   int32_t x[MAX_CHANNELS][HAN_SIZE];
 } subband_t; 
 

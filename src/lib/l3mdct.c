@@ -1,6 +1,7 @@
 /* L3mdct */
 
 #include "types.h"
+#include "l3luts.h"
 #include "l3mdct.h"
 #include "l3subband.h"
 
@@ -32,6 +33,7 @@
  */
 void shine_mdct_initialise(shine_global_config *config)
 {
+#ifndef USE_CONST_MDCT_LUT
   int m,k;
 
   /* prepare the mdct coefficients */
@@ -41,6 +43,9 @@ void shine_mdct_initialise(shine_global_config *config)
       /* scale and convert to fixed point before storing */
       config->mdct.cos_l[m][k] = (int32_t)(sin(PI36*(k+0.5))
                                       * cos((PI/72)*(2*k+19)*(2*m+1)) * 0x7fffffff);
+#else
+  config->mdct.cos_l = mdct_cos_l;
+#endif
 }
 
 /*

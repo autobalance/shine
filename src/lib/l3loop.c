@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "tables.h"
+#include "l3luts.h"
 #include "l3loop.h"
 #include "layer3.h"
 #include "huffman.h"
@@ -343,6 +344,7 @@ void calc_xmin(shine_psy_ratio_t *ratio,
  */
 void shine_loop_initialise(shine_global_config *config)
 {
+  #ifndef USE_CONST_L3LOOP_LUT
   int i;
 
   /* quantize: stepsize conversion, fourth root of 2 table.
@@ -368,6 +370,11 @@ void shine_loop_initialise(shine_global_config *config)
    */
   for(i=10000; i--;)
     config->l3loop.int2idx[i] = (int)(sqrt(sqrt((double)i)*(double)i) - 0.0946 + 0.5);
+  #else
+  config->l3loop.steptab = l3loop_steptab;
+  config->l3loop.steptabi = l3loop_steptabi;
+  config->l3loop.int2idx = l3loop_int2idx;
+  #endif
 }
 
 /*

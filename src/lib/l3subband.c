@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "tables.h"
+#include "l3luts.h"
 #include "l3subband.h"
 
 /*
@@ -13,13 +14,16 @@
  */
 void shine_subband_initialise(shine_global_config *config)
 {
-  int i,j;
-  double filter;
+  int i;
 
   for(i=MAX_CHANNELS; i-- ; ) {
     config->subband.off[i] = 0;
     memset(config->subband.x[i], 0, sizeof(config->subband.x[i]));
   }
+
+  #ifndef USE_CONST_SUBBAND_LUT
+  int j;
+  double filter;
 
   for (i=SBLIMIT; i--; )
     for (j=64; j--; )
@@ -31,6 +35,9 @@ void shine_subband_initialise(shine_global_config *config)
       /* scale and convert to fixed point before storing */
       config->subband.fl[i][j] = (int32_t)(filter * (0x7fffffff * 1e-9));
     }
+  #else
+  config->subband.fl = subband_fl;
+  #endif
 }
 
 /*
