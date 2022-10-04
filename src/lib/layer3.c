@@ -124,7 +124,7 @@ shine_global_config *shine_initialise(shine_config_t *pub_config)
                         (1000*(double)config->mpeg.bitr /
                          (double)config->mpeg.bits_per_slot);
 
-  config->mpeg.whole_slots_per_frame  = (int)avg_slots_per_frame;
+  config->mpeg.whole_slots_per_frame  = (int)(float)avg_slots_per_frame;
 
   config->mpeg.frac_slots_per_frame  = avg_slots_per_frame - (double)config->mpeg.whole_slots_per_frame;
   config->mpeg.slot_lag              = -config->mpeg.frac_slots_per_frame;
