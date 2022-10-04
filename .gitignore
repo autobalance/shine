@@ -37,8 +37,6 @@ src/l3bitstream.lo
 src/l3bitstream.o
 src/l3loop.lo
 src/l3loop.o
-src/l3luts.lo
-src/l3luts.o
 src/l3mdct.lo
 src/l3mdct.o
 src/l3subband.lo
@@ -73,6 +71,8 @@ src/lib/l3bitstream.lo
 src/lib/l3bitstream.o
 src/lib/l3loop.lo
 src/lib/l3loop.o
+src/lib/l3luts.lo
+src/lib/l3luts.o
 src/lib/l3mdct.lo
 src/lib/l3mdct.o
 src/lib/l3subband.lo
