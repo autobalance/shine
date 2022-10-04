@@ -457,6 +457,7 @@ void calc_runlen( int ix[GRANULE_SIZE], gr_info *cod_info )
 
   cod_info->count1 = 0 ;
   for ( ; i > 3; i -= 4 )
+  {
     if (   ix[i-1] <= 1
         && ix[i-2] <= 1
         && ix[i-3] <= 1
@@ -464,8 +465,9 @@ void calc_runlen( int ix[GRANULE_SIZE], gr_info *cod_info )
       cod_info->count1++;
     else
       break;
+  }
 
-    cod_info->big_values = i>>1;
+  cod_info->big_values = i>>1;
 }
 
 /*
